@@ -25,27 +25,26 @@ func main() {
 
 // CheckDocker will return whether Docker is installed, furthermore it will give installation relevant installation instructions
 func CheckDocker(w http.ResponseWriter, r *http.Request) {
+	var response DockerResponse
 
 	if dockerIsNotInstalled() {
 		if runtime.GOOS == "windows" {
-			var response = DockerResponse{Installed: false, InstallationURL: "https://hub.docker.com/editions/community/docker-ce-desktop-windows"}
-			json.NewEncoder(w).Encode(response)
+			response = DockerResponse{Installed: false, InstallationURL: "https://hub.docker.com/editions/community/docker-ce-desktop-windows"}
 
 		} else if runtime.GOOS == "darwin" {
-			var response = DockerResponse{Installed: false, InstallationURL: "https://hub.docker.com/editions/community/docker-ce-desktop-mac"}
-			json.NewEncoder(w).Encode(response)
+			response = DockerResponse{Installed: false, InstallationURL: "https://hub.docker.com/editions/community/docker-ce-desktop-mac"}
 
 		} else {
-			var response = DockerResponse{Installed: false, InstallationInstruction: "Installation script for Linux started in the background."}
-			json.NewEncoder(w).Encode(response)
+			response = DockerResponse{Installed: false, InstallationInstruction: "Installation script for Linux started in the background."}
 			exec.Command("curl -fsSL https://get.docker.com -o get-docker.sh")
 			exec.Command("sudo sh get-docker.sh")
 
 		}
 	} else {
-		var response = DockerResponse{Installed: true, InstallationInstruction: "Docker is already installed."}
-		json.NewEncoder(w).Encode(response)
+		response = DockerResponse{Installed: true, InstallationInstruction: "Docker is already installed."}
 	}
+
+	json.NewEncoder(w).Encode(response)
 }
 
 func dockerIsNotInstalled() bool {
