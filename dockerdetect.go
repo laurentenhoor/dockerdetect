@@ -42,7 +42,7 @@ func checkDocker(w http.ResponseWriter, r *http.Request) {
 	} else {
 		response = dockerResponse{Installed: true, InstallationInstruction: "Docker is already installed."}
 	}
-
+	enableCors(&w)
 	json.NewEncoder(w).Encode(response)
 }
 
@@ -55,4 +55,8 @@ func dockerIsNotInstalled() bool {
 	}
 	fmt.Println("Docker is not installed.")
 	return true
+}
+
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
