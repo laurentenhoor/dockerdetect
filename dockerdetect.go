@@ -1,4 +1,4 @@
-package main
+package dockerdetect
 
 import (
 	"encoding/json"
@@ -17,7 +17,7 @@ type DockerResponse struct {
 	InstallationInstruction string
 }
 
-func main() {
+func init() {
 	router := mux.NewRouter()
 	router.HandleFunc("/docker", CheckDocker).Methods("GET")
 	log.Fatal(http.ListenAndServe("localhost:8000", router))
