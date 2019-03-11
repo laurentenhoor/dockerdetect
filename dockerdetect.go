@@ -34,9 +34,7 @@ func checkDocker(w http.ResponseWriter, r *http.Request) {
 			response = dockerResponse{Installed: false, InstallationURL: "https://hub.docker.com/editions/community/docker-ce-desktop-mac"}
 
 		} else {
-			response = dockerResponse{Installed: false, InstallationInstruction: "Installation script for Linux started in the background."}
-			exec.Command("curl -fsSL https://get.docker.com -o get-docker.sh")
-			exec.Command("sudo sh get-docker.sh")
+			response = dockerResponse{Installed: false, InstallationURL: "https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce"}
 
 		}
 	} else {
